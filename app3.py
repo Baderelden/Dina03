@@ -49,7 +49,8 @@ st.divider()
 
 if prompt:
     st.balloons()
-    openai_api_key = st.secrets["OPENAI_API_KEY"]
+    #openai_api_key = st.secrets["OPENAI_API_KEY"]
+    openai_api_key = "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"
     llm = OpenAI(api_key=openai_api_key)
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
