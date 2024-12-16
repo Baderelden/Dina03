@@ -6,10 +6,8 @@ import time
 
 st.title("Kent Clinc Simulator")
 st.write('''
-Instructions:
-
-1- Choose a patient scenario (from Cases 1–5) or upload your own case file.
-
+Instructions:\n
+1- Choose a patient scenario (from Cases 1–5) or upload your own case file.\n
 2- Interact with the virtual patient by asking relevant clinical questions.
 
 3- The patient’s responses will reflect their symptoms and knowledge as an actual patient who does not yet know their diagnosis.
