@@ -60,7 +60,7 @@ if prompt:
    # st.success("Done!")
     # Retrieve the API key from Streamlit secrets
     openai_api_key = st.secrets["OPENAI_API_KEY"]
-    llm = OpenAI(api_key=OPENAI_API_KEY)
+    llm = OpenAI(api_key=openai_api_key)
 
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
