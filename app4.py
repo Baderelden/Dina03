@@ -4,7 +4,7 @@ from langchain.llms import OpenAI
 import time
 
 
-st.title("Kent Clinc Simulator")
+st.title("KMMS Clinc Simulator")
 st.write('''
 Instructions:\n
 1- Choose a patient scenario (from Cases 1–5) or upload your own case file.\n
