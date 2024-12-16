@@ -1,6 +1,8 @@
 import streamlit as st
 from langchain import PromptTemplate, LLMChain
 from langchain.llms import OpenAI
+import time
+
 
 st.title("AI Simulator")
 
@@ -52,12 +54,13 @@ prompt = st.text_input("Your question:")
 st.divider()
 
 if prompt:
-    st.balloons()
-
+    #st.balloons()
+    with st.spinner('hmmmmmmm...'):
+        time.sleep(2)
+   # st.success("Done!")
     # Retrieve the API key from Streamlit secrets
     # openai_api_key = st.secrets["OPENAI_API_KEY"]
-    openai_api_key="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"
-    llm = OpenAI(api_key=openai_api_key)
+    llm = OpenAI(api_key="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")
 
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
