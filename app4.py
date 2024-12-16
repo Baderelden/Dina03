@@ -55,7 +55,8 @@ if prompt:
     st.balloons()
 
     # Retrieve the API key from Streamlit secrets
-    openai_api_key = st.secrets["OPENAI_API_KEY"]
+    # openai_api_key = st.secrets["OPENAI_API_KEY"]
+    api_key="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"
     llm = OpenAI(api_key=openai_api_key)
 
     template = """
