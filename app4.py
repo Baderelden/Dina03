@@ -7,10 +7,15 @@ import time
 st.title("Kent Clinc Simulator")
 st.write('''
 Instructions:
+
 1- Choose a patient scenario (from Cases 1–5) or upload your own case file.
+
 2- Interact with the virtual patient by asking relevant clinical questions.
+
 3- The patient’s responses will reflect their symptoms and knowledge as an actual patient who does not yet know their diagnosis.
+
 4- Use the information gathered to form and refine your differential diagnosis.
+
 5- Continue exploring the case until you feel confident in your final diagnosis.
 ''')
 st.divider()
