@@ -59,8 +59,8 @@ if prompt:
         time.sleep(2)
    # st.success("Done!")
     # Retrieve the API key from Streamlit secrets
-    # openai_api_key = st.secrets["OPENAI_API_KEY"]
-    llm = OpenAI(api_key="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")
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+    llm = OpenAI(api_key=OPENAI_API_KEY)
 
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
