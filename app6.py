@@ -9,8 +9,14 @@ history_file_name = st.sidebar.text_input("Enter the file name to save history:"
 st.sidebar.write("You can optionally upload a file for context:")
 uploaded_file = st.sidebar.file_uploader("Upload a file (e.g., .txt)", type=["txt", "md", "csv", "json"])
 
-# Main Title
-st.title("KMMS AI Simulator")
+# Main Title and Logo
+col1, col2 = st.columns([3, 1])
+with col1:
+    st.title("KMMS AI Simulator")
+with col2:
+    st.image("logo.jpg", use_column_width=True)
+
+
 st.write('''
 Instructions:\n
 1- Choose a patient scenario (from Cases 1 or 2) or upload your own case file.\n
