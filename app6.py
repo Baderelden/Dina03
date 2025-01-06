@@ -10,7 +10,7 @@ st.sidebar.write("You can optionally upload a file for context:")
 uploaded_file = st.sidebar.file_uploader("Upload a file (e.g., .txt)", type=["txt", "md", "csv", "json"])
 
 # Main Title
-st.title("AI Simulator")
+st.title("KMMS AI Simulator")
 st.markdown("---")
 
 # Load predefined cases
