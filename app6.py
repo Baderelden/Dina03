@@ -129,3 +129,37 @@ if st.button("Send Diagnosis"):
     st.session_state["qa_history"].append({"question": "User Diagnosis", "answer": user_diagnosis})
     st.success("Diagnosis added to the file and history.")
 
+# Generate Analysis Section
+st.header("Generate Analysis")
+if st.button("Generate Feedback"):
+    if st.session_state["qa_history"] and user_diagnosis:
+        with st.spinner('Generating analysis...'):
+            time.sleep(2)
+            analysis_llm = OpenAI(api_key=openai_api_key)
+
+            analysis_template = """
+            Based on the following Q&A history and user diagnosis, provide detailed feedback:
+
+            Q&A History:
+            {qa_history}
+
+            User Diagnosis:
+            {user_diagnosis}
+
+            Provide constructive feedback on the questions asked and the diagnosis provided.
+            """
+
+            analysis_prompt = PromptTemplate(
+                input_variables=["qa_history", "user_diagnosis"],
+                template=analysis_template
+            )
+
+            analysis_chain = LLMChain(prompt=analysis_prompt, llm=analysis_llm)
+            analysis_response = analysis_chain.run(
+                qa_history=qa_history_text, user_diagnosis=user_diagnosis
+            )
+
+            st.subheader("Analysis Feedback")
+            st.markdown(analysis_response)
+    else:
+        st.error("Please ensure both Q&A history and user diagnosis are available.")
