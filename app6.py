@@ -38,12 +38,10 @@ with open("case2.txt", "r") as f:
 
 # Select Case
 st.header("Select a Case")
-col1, col2 = st.columns(2)
-
-if col1.button("Case 1"):
+if st.button("Case 1"):
     st.session_state["selected_case"] = case1_text
     st.session_state["file_name"] = "case1.txt"
-if col2.button("Case 2"):
+if st.button("Case 2"):
     st.session_state["selected_case"] = case2_text
     st.session_state["file_name"] = "case2.txt"
 
