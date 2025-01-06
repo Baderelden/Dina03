@@ -10,7 +10,7 @@ st.sidebar.write("You can optionally upload a file for context:")
 uploaded_file = st.sidebar.file_uploader("Upload a file (e.g., .txt)", type=["txt", "md", "csv", "json"])
 
 # Main Title and Logo
-col1, col2, col3 = st.columns([3, 1])
+col1, col2, col3 = st.columns([4, 1])
 with col1:
     st.title("KMMS AI Simulator")
 with col2:
