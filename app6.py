@@ -135,7 +135,7 @@ if st.button("Generate Feedback"):
     if st.session_state["qa_history"] and user_diagnosis:
         with st.spinner('Generating analysis...'):
             time.sleep(2)
-            analysis_llm = OpenAI(api_key="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")
+            analysis_llm = OpenAI(api_key=openai_api_key)
 
             analysis_template = """
             Based on the following Q&A history and user diagnosis, provide detailed feedback:
