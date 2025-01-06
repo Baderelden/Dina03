@@ -16,7 +16,7 @@ with col1:
 with col2:
     st.image("logo1.jpg", width=300)
 with col3:
-    st.image("logo2.jpg", width=90)
+    st.image("logo2.jpg", width=300)
 
 st.write('''
 Instructions:\n
