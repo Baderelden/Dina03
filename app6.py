@@ -14,9 +14,9 @@ col1, col2, col3 = st.columns([3, 1, 1])
 with col1:
     st.title("KMMS AI Simulator")
 with col2:
-    st.image("logo.jpg", width=250)
+    st.image("logo.jpg", width=300)
 with col3:
-    st.image("logo2.jpg", width=100)
+    st.image("logo2.jpg", width=90)
 
 st.write('''
 Instructions:\n
