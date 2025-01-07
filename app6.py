@@ -86,9 +86,9 @@ if prompt:
     )
     
     try:
-        #llm_chain = LLMChain(prompt=prompt_template, llm=llm)
-        llm_chain = LLMChain(prompt="test", llm=llm)
-        response = llm_chain.run(user_prompt=prompt, file_content=file_content)
+        llm_chain = LLMChain(prompt=prompt_template, llm=llm)
+        #response = llm_chain.run(user_prompt=prompt, file_content=file_content)
+        response = llm_chain.run(user_prompt=prompt)
     except openai.AuthenticationError:
         st.error("Authentication failed. Please check your API key.")
 
