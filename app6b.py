@@ -73,7 +73,10 @@ st.divider()
 if prompt:
     with st.spinner('hmmmmmmm...'):
         time.sleep(2)
-
+    
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+    llm = OpenAI(api_key=openai_api_key)
+    
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
     {file_content}
