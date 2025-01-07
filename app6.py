@@ -88,7 +88,7 @@ if prompt:
     try:
         llm_chain = LLMChain(prompt=prompt_template, llm=llm)
         response = llm_chain.run(user_prompt=prompt, file_content=file_content)
-    except openai.AuthenticationError:
+    except OpenAI.AuthenticationError:
         st.error("test - Authentication failed. Please check your API key.")
 
     st.session_state["qa_history"].append({"question": prompt, "answer": response})
