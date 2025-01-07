@@ -3,9 +3,16 @@ from langchain import PromptTemplate, LLMChain
 from langchain.llms import OpenAI
 import time
 
-st.title("AI Simulator")
+# Main Title and Logos
+col1, col2, col3 = st.columns([3, 1, 1])
+with col1:
+    st.title("AI Simulator")
+with col2:
+    st.image("logo.jpg", width=100)
+with col3:
+    st.image("logo2.jpg", width=100)
 
-st.divider()
+st.markdown("---")
 
 # Read predefined texts from external files located in the root folder
 with open("case1.txt", "r") as f:
