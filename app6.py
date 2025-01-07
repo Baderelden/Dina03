@@ -68,9 +68,9 @@ prompt = st.text_input("Enter your question:")
 if prompt:
     with st.spinner('Processing...'):
         time.sleep(2)
-    # openai_api_key = st.secrets["OPENAI_API_KEY"]
-    # llm = OpenAI(api_key=openai_api_key)
-    llm = OpenAI(api_key="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")
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+    llm = OpenAI(api_key=openai_api_key)
+    #llm = OpenAI(api_key="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")
     
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
@@ -86,7 +86,8 @@ if prompt:
     )
     
     try:
-        llm_chain = LLMChain(prompt=prompt_template, llm=llm)
+        #llm_chain = LLMChain(prompt=prompt_template, llm=llm)
+        llm_chain = LLMChain(prompt="test", llm=llm)
         response = llm_chain.run(user_prompt=prompt, file_content=file_content)
     except openai.AuthenticationError:
         st.error("Authentication failed. Please check your API key.")
