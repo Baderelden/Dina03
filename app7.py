@@ -3,9 +3,16 @@ from langchain import PromptTemplate, LLMChain
 from langchain.llms import OpenAI
 import time
 
-# Title
-st.title("AI Simulator")
+# Main Title and Logos
+col1, col2, col3 = st.columns([3, 1, 1])
+with col1:
+    st.title("AI Simulator")
+with col2:
+    st.image("logo.jpg", width=100)
+with col3:
+    st.image("logo2.jpg", width=100)
 
+st.markdown("---")
 st.divider()
 
 # Read predefined texts from external files located in the root folder
@@ -59,55 +66,106 @@ if uploaded_file is not None:
 if "selected_case" in st.session_state:
     file_content = st.session_state["selected_case"]
 
+
+
+# Ask the Patient Section
 st.write("Ask the patient")
+if "qa_history" not in st.session_state:
+    st.session_state["qa_history"] = []
 
-# User question input
-prompt = st.text_input("Your question:")
-
-# Divider
-st.divider()
-
-# Log questions and answers
-if "chat_log" not in st.session_state:
-    st.session_state["chat_log"] = []
-
+prompt = st.text_input("Enter your question:")
 if prompt:
-    with st.spinner('hmmmmmmm...'):
+    with st.spinner('Processing...'):
         time.sleep(2)
-        
-        openai_api_key = st.secrets["OPENAI_API_KEY"]
-        llm = OpenAI(api_key=openai_api_key)
-  
-        template = """
-        You are a virtual patient. Below is additional context from a file or a selected case:
-        {file_content}
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+    llm = OpenAI(api_key=openai_api_key)
 
-        The user asks: {user_prompt}
-        Please respond as helpfully and accurately as possible.
-        """
+    template = """
+    You are a virtual patient. Below is additional context from a file or a selected case:
+    {file_content}
 
-        prompt_template = PromptTemplate(
-            input_variables=["user_prompt", "file_content"],
-            template=template
-        )
+    The user asks: {user_prompt}
+    Please respond as helpfully and accurately as possible.
+    """
 
-        llm_chain = LLMChain(prompt=prompt_template, llm=llm)
-        response = llm_chain.run(user_prompt=prompt, file_content=file_content)
-        
-        # Display ChatGPT's response
-        st.write(f"Patient: {response}")
-        
-        # Log the conversation
-        st.session_state["chat_log"].append({"question": prompt, "answer": response})
+    prompt_template = PromptTemplate(
+        input_variables=["user_prompt", "file_content"],
+        template=template
+    )
 
-# Display chat log
-st.divider()
-st.write("### Chat Log")
-for idx, entry in enumerate(st.session_state["chat_log"]):
-    st.write(f"**Q{idx + 1}:** {entry['question']}")
-    st.write(f"**A{idx + 1}:** {entry['answer']}")
+    llm_chain = LLMChain(prompt=prompt_template, llm=llm)
+    response = llm_chain.run(user_prompt=prompt, file_content=file_content)
 
-# User input box at the end
-st.divider()
-st.write("### Your Answer")
-user_answer = st.text_area("Please input your answer here:")
+    st.session_state["qa_history"].append({"question": prompt, "answer": response})
+
+    with open(history_file_name, "a") as file:
+        file.write(f"File Name: {file_name}\n")
+        file.write(f"Q: {prompt}\n")
+        file.write(f"A: {response}\n")
+        file.write("\n")
+
+    st.markdown(f"**Patient Response:** {response}")
+
+st.markdown("---")
+
+# Q&A History Section
+st.header("Q&A History")
+qa_history_text = "\n".join(
+    [f"Q: {qa['question']}\nA: {qa['answer']}" for qa in st.session_state["qa_history"]]
+)
+st.text_area("Conversation History", qa_history_text, height=300, disabled=True)
+if st.session_state["qa_history"]:
+    history_download = "\n".join(
+        [f"File Name: {file_name}\nQ: {qa['question']}\nA: {qa['answer']}\n" for qa in st.session_state["qa_history"]]
+    )
+    st.download_button(
+        label="Download History",
+        data=history_download,
+        file_name=history_file_name,
+        mime="text/plain"
+    )
+
+# Diagnosis Section
+st.header("Your Diagnosis")
+user_diagnosis = st.text_area("Provide your diagnosis below:")
+if st.button("Send Diagnosis"):
+    with open(history_file_name, "a") as file:
+        file.write("### User Diagnosis:\n")
+        file.write(user_diagnosis + "\n")
+    st.session_state["qa_history"].append({"question": "User Diagnosis", "answer": user_diagnosis})
+    st.success("Diagnosis added to the file and history.")
+
+# Generate Analysis Section
+st.header("Generate Analysis")
+if st.button("Generate Feedback"):
+    if st.session_state["qa_history"] and user_diagnosis:
+        with st.spinner('Generating analysis...'):
+            time.sleep(2)
+            analysis_llm = OpenAI(api_key="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")
+
+            analysis_template = """
+            Based on the following Q&A history and user diagnosis, provide detailed feedback:
+
+            Q&A History:
+            {qa_history}
+
+            User Diagnosis:
+            {user_diagnosis}
+
+            Provide constructive feedback on the questions asked and the diagnosis provided.
+            """
+
+            analysis_prompt = PromptTemplate(
+                input_variables=["qa_history", "user_diagnosis"],
+                template=analysis_template
+            )
+
+            analysis_chain = LLMChain(prompt=analysis_prompt, llm=analysis_llm)
+            analysis_response = analysis_chain.run(
+                qa_history=qa_history_text, user_diagnosis=user_diagnosis
+            )
+
+            st.subheader("Analysis Feedback")
+            st.markdown(analysis_response)
+    else:
+        st.error("Please ensure both Q&A history and user diagnosis are available.")
