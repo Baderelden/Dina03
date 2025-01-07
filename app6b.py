@@ -99,7 +99,7 @@ if prompt:
 
     llm_chain = LLMChain(prompt=prompt_template, llm=llm)
     response = llm_chain.run(user_prompt=prompt, file_content=file_content)
-    st.write(f"Patient: {response}")
+    #st.write(f"Patient: {response}")
 
     # Save to session state
     st.session_state["qa_history"].append({"question": prompt, "answer": response})
