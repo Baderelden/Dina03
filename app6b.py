@@ -3,19 +3,8 @@ from langchain import PromptTemplate, LLMChain
 from langchain.llms import OpenAI
 import time
 
+st.title("AI Simulator")
 
-st.title("KMMS Clinc Simulator")
-st.write('''
-Instructions:\n
-1- Choose a patient scenario (from Cases 1–5) or upload your own case file.\n
-2- Interact with the virtual patient by asking relevant clinical questions.
-
-3- The patient’s responses will reflect their symptoms and knowledge as an actual patient who does not yet know their diagnosis.
-
-4- Use the information gathered to form and refine your differential diagnosis.
-
-5- Continue exploring the case until you feel confident in your final diagnosis.
-''')
 st.divider()
 
 # Read predefined texts from external files located in the root folder
@@ -35,14 +24,19 @@ col1, col2, col3, col4, col5 = st.columns(5)
 
 if col1.button("Case 1"):
     st.session_state["selected_case"] = case1_text
+    st.session_state["file_name"] = "case1.txt"
 if col2.button("Case 2"):
     st.session_state["selected_case"] = case2_text
+    st.session_state["file_name"] = "case2.txt"
 if col3.button("Case 3"):
     st.session_state["selected_case"] = case3_text
+    st.session_state["file_name"] = "case3.txt"
 if col4.button("Case 4"):
     st.session_state["selected_case"] = case4_text
+    st.session_state["file_name"] = "case4.txt"
 if col5.button("Case 5"):
     st.session_state["selected_case"] = case5_text
+    st.session_state["file_name"] = "case5.txt"
 
 st.divider()
 
@@ -50,27 +44,35 @@ st.write("You can optionally upload a file for context:")
 uploaded_file = st.file_uploader("Upload a file (e.g., .txt)", type=["txt", "md", "csv", "json"])
 
 file_content = ""
+file_name = "Uploaded file"
+
 if uploaded_file is not None:
     file_content = uploaded_file.read().decode("utf-8")
+    st.session_state["file_name"] = uploaded_file.name
 
 # If a case has been selected, use that instead of file content
 if "selected_case" in st.session_state:
     file_content = st.session_state["selected_case"]
+    file_name = st.session_state["file_name"]
+
+# Display file name
+st.text(f"File Name: {file_name}")
+
+# Allow user to specify the history file name
+history_file_name = st.text_input("Enter the file name to save history:", value="chat_history.txt")
 
 st.write("Ask the patient")
+
+if "qa_history" not in st.session_state:
+    st.session_state["qa_history"] = []
 
 prompt = st.text_input("Your question:")
 
 st.divider()
 
 if prompt:
-    #st.balloons()
     with st.spinner('hmmmmmmm...'):
         time.sleep(2)
-   # st.success("Done!")
-    # Retrieve the API key from Streamlit secrets
-    openai_api_key = st.secrets["OPENAI_API_KEY"]
-    llm = OpenAI(api_key=openai_api_key)
 
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
@@ -88,4 +90,47 @@ if prompt:
     llm_chain = LLMChain(prompt=prompt_template, llm=llm)
     response = llm_chain.run(user_prompt=prompt, file_content=file_content)
     st.write(f"Patient: {response}")
-    
+
+    # Save to session state
+    st.session_state["qa_history"].append({"question": prompt, "answer": response})
+
+    # Append the interaction to an external file
+    with open(history_file_name, "a") as file:
+        file.write(f"File Name: {file_name}\n")
+        file.write(f"Q: {prompt}\n")
+        file.write(f"A: {response}\n")
+        file.write("\n")
+
+    st.write(f"Patient: {response}")
+
+# Display all questions and answers
+st.divider()
+st.write("### Question & Answer History")
+qa_history_text = "\n".join(
+    [f"Q: {qa['question']}\nA: {qa['answer']}" for qa in st.session_state["qa_history"]]
+)
+st.text_area("ChatGPT Q&A History", qa_history_text, height=300, disabled=True)
+
+# Provide download button for saving the history
+if st.session_state["qa_history"]:
+    history_download = "\n".join(
+        [f"File Name: {file_name}\nQ: {qa['question']}\nA: {qa['answer']}\n" for qa in st.session_state["qa_history"]]
+    )
+    st.download_button(
+        label="Download Q&A History",
+        data=history_download,
+        file_name=history_file_name,
+        mime="text/plain"
+    )
+
+# Final text box for user's answer
+st.divider()
+st.write("### Your Diagnosis")
+user_diagnosis = st.text_area("Provide your response below:")
+
+# Button to save diagnosis to the file
+if st.button("Send Diagnosis"):
+    with open(history_file_name, "a") as file:
+        file.write("### User Diagnosis:\n")
+        file.write(user_diagnosis + "\n")
+    st.success("Diagnosis added to the file.")
