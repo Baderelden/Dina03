@@ -133,14 +133,12 @@ if st.session_state["qa_history"]:
         mime="text/plain"
     )
 
-# Final text box for user's answer
-st.divider()
-st.write("### Your Diagnosis")
-user_diagnosis = st.text_area("Provide your response below:")
-
-# Button to save diagnosis to the file
+# Diagnosis Section
+st.header("Your Diagnosis")
+user_diagnosis = st.text_area("Provide your diagnosis below:")
 if st.button("Send Diagnosis"):
     with open(history_file_name, "a") as file:
         file.write("### User Diagnosis:\n")
         file.write(user_diagnosis + "\n")
-    st.success("Diagnosis added to the file.")
+    st.session_state["qa_history"].append({"question": "User Diagnosis", "answer": user_diagnosis})
+    st.success("Diagnosis added to the file and history.")
