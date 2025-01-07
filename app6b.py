@@ -74,7 +74,7 @@ if prompt:
     with st.spinner('hmmmmmmm...'):
         time.sleep(2)
 
-    llm = OpenAI(api_key="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")
+    llm = OpenAI(api_key="kFJz5F7-mSkjM7sSI4Tv3H_FEK5ByIU5a4hA0sq9lu4IdkDZe3gmqNglm2b7NlRhP1z3Rifsz5CAA")
 
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
@@ -127,7 +127,7 @@ if st.session_state["qa_history"]:
 # Final text box for user's answer
 st.divider()
 st.write("### Your Diagnosis")
-user_diagnosis = st.text_area("Provide your diagnosis below:")
+user_diagnosis = st.text_area("Provide your response below:")
 
 # Button to save diagnosis to the file
 if st.button("Send Diagnosis"):
@@ -135,4 +135,3 @@ if st.button("Send Diagnosis"):
         file.write("### User Diagnosis:\n")
         file.write(user_diagnosis + "\n")
     st.success("Diagnosis added to the file.")
-
