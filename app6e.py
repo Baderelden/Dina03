@@ -134,31 +134,34 @@ admin_input = st.text_input("Enter the admin code:")
 # Generate Analysis Section
 st.header("Generate Analysis")
 if st.button("Generate Feedback"):
-    if st.session_state["qa_history"] and admin_input == "admin1":
-        with st.spinner('Generating analysis...'):
-            time.sleep(2)
-            analysis_llm = OpenAI(api_key=openai_api_key)
-
-            analysis_template = """
-            Based on the following Q&A history, provide detailed feedback:
-
-            Q&A History:
-            {qa_history}
-
-            Provide constructive feedback on the questions asked provided.
-            """
-
-            analysis_prompt = PromptTemplate(
-                input_variables=["qa_history"],
-                template=analysis_template
-            )
-
-            analysis_chain = LLMChain(prompt=analysis_prompt, llm=analysis_llm)
-            analysis_response = analysis_chain.run(
-                qa_history=qa_history_text
-            )
-
-            st.subheader("Analysis Feedback")
-            st.markdown(analysis_response)
+    if st.session_state["qa_history"]:
+            if admin_input == "admin1":
+                with st.spinner('Generating analysis...'):
+                    time.sleep(2)
+                    analysis_llm = OpenAI(api_key=openai_api_key)
+        
+                    analysis_template = """
+                    Based on the following Q&A history, provide detailed feedback:
+        
+                    Q&A History:
+                    {qa_history}
+        
+                    Provide constructive feedback on the questions asked provided.
+                    """
+        
+                    analysis_prompt = PromptTemplate(
+                        input_variables=["qa_history"],
+                        template=analysis_template
+                    )
+        
+                    analysis_chain = LLMChain(prompt=analysis_prompt, llm=analysis_llm)
+                    analysis_response = analysis_chain.run(
+                        qa_history=qa_history_text
+                    )
+        
+                    st.subheader("Analysis Feedback")
+                    st.markdown(analysis_response)
+            else:
+                st.error("This is for admin use only - please make sure the code is correct.")
     else:
         st.error("Please ensure both Q&A history are available.")
