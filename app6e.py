@@ -161,4 +161,4 @@ if st.button("Generate Feedback"):
             st.subheader("Analysis Feedback")
             st.markdown(analysis_response)
     else:
-        st.error("Please ensure both Q&A history and user diagnosis are available.")
+        st.error("Please ensure both Q&A history are available.")
