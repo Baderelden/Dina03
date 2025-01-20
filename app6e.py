@@ -134,6 +134,8 @@ if st.session_state["qa_history"]:
 st.markdown("---")
 st.markdown("---")
 
+st.title("For Admin Use ONLY")
+
 admin_input = st.text_input("Enter the admin code:")
 # Generate Analysis Section
 st.header("Generate Analysis")
