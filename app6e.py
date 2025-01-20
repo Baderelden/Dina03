@@ -130,6 +130,10 @@ if st.session_state["qa_history"]:
 #    st.session_state["qa_history"].append({"question": "User Diagnosis", "answer": user_diagnosis})
 #    st.success("Diagnosis added to the file and history.")
 
+
+st.markdown("---")
+st.markdown("---")
+
 admin_input = st.text_input("Enter the admin code:")
 # Generate Analysis Section
 st.header("Generate Analysis")
