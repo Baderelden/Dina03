@@ -12,7 +12,7 @@ uploaded_file = st.sidebar.file_uploader("Upload a file (e.g., .txt)", type=["tx
 # Main Title and Logo
 col1, col2, col3 = st.columns([3, 1, 1])
 with col1:
-    st.title("KMMS AI Simulator")
+    st.title("KMMS AI Simulator V6d")
 with col2:
     st.image("logo1.jpg", width=300)
 with col3:
