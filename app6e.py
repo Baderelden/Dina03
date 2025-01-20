@@ -140,25 +140,22 @@ if st.button("Generate Feedback"):
             analysis_llm = OpenAI(api_key=openai_api_key)
 
             analysis_template = """
-            Based on the following Q&A history and user diagnosis, provide detailed feedback:
+            Based on the following Q&A history, provide detailed feedback:
 
             Q&A History:
             {qa_history}
 
-            User Diagnosis:
-            {user_diagnosis}
-
-            Provide constructive feedback on the questions asked and the diagnosis provided.
+            Provide constructive feedback on the questions asked provided.
             """
 
             analysis_prompt = PromptTemplate(
-                input_variables=["qa_history", "user_diagnosis"],
+                input_variables=["qa_history"],
                 template=analysis_template
             )
 
             analysis_chain = LLMChain(prompt=analysis_prompt, llm=analysis_llm)
             analysis_response = analysis_chain.run(
-                qa_history=qa_history_text, user_diagnosis=user_diagnosis
+                qa_history=qa_history_text
             )
 
             st.subheader("Analysis Feedback")
