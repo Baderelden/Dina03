@@ -41,7 +41,7 @@ with open("case2.txt", "r") as f:
 st.header("Select a Case")
 if st.button("Case 1"):
     st.session_state["selected_case"] = case1_text
-    st.session_state["file_name"] = "case4.txt"
+    st.session_state["file_name"] = "case3.txt"
 if st.button("Case 2"):
     st.session_state["selected_case"] = case2_text
     st.session_state["file_name"] = "case5.txt"
