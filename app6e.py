@@ -29,7 +29,7 @@ Instructions:\n
 
 5- Continue exploring the case until you feel confident in your final diagnosis.
 ''')
-st.markdown("---")
+#st.markdown("---")
 
 # Load predefined cases
 with open("case1.txt", "r") as f:
@@ -57,7 +57,7 @@ if "selected_case" in st.session_state:
     file_name = st.session_state["file_name"]
 
 st.markdown(f"**File Name:** {file_name}")
-st.markdown("---")
+#st.markdown("---")
 
 # Ask the Patient Section
 st.header("Ask the Virtual Patient")
@@ -101,7 +101,7 @@ if prompt:
 
     st.markdown(f"**Patient Response:** {response}")
 
-st.markdown("---")
+#st.markdown("---")
 
 # Q&A History Section
 st.header("Q&A History")
@@ -131,7 +131,6 @@ if st.session_state["qa_history"]:
 #    st.success("Diagnosis added to the file and history.")
 
 
-st.markdown("---")
 st.markdown("---")
 
 st.title("For Admin Use ONLY")
