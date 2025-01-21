@@ -32,9 +32,9 @@ Instructions:\n
 #st.markdown("---")
 
 # Load predefined cases
-with open("case1.txt", "r") as f:
+with open("case4.txt", "r") as f:
     case1_text = f.read()
-with open("case2.txt", "r") as f:
+with open("case5.txt", "r") as f:
     case2_text = f.read()
 
 # Select Case
