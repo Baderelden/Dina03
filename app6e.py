@@ -2,23 +2,12 @@ import streamlit as st
 from langchain import PromptTemplate, LLMChain
 from langchain.llms import OpenAI
 import time
-import pyttsx3
-from streamlit_webrtc import webrtc_streamer, RTCConfiguration
-
-RTC_CONFIGURATION = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
-
-
-def text_to_speech(text):
-    engine = pyttsx3.init()
-    engine.say(text)
-    engine.runAndWait()
-
 
 # Sidebar for optional inputs
 st.sidebar.header("Options")
 history_file_name = st.sidebar.text_input("Enter the file name to save history:", value="chat_history.txt")
 st.sidebar.write("You can optionally upload a file for context:")
-uploaded_file = st.sidebar.file_uploader("Upload a file (e.g., .txt, .md, .csv, .json)", type=["txt", "md", "csv", "json"])
+uploaded_file = st.sidebar.file_uploader("Upload a file (e.g., .txt)", type=["txt", "md", "csv", "json"])
 
 # Main Title and Logo
 col1, col2, col3 = st.columns([3, 1, 1])
@@ -29,15 +18,18 @@ with col2:
 with col3:
     st.image("logo2.jpg", width=300)
 
-# Instructions Section
 st.write('''
 Instructions:\n
 1- Choose a patient scenario (from Cases 1 or 2) or upload your own case file.\n
-2- Interact with the virtual patient by asking relevant clinical questions.\n
-3- The patient’s responses will reflect their symptoms and knowledge as an actual patient who does not yet know their diagnosis.\n
-4- Use the information gathered to form and refine your differential diagnosis.\n
+2- Interact with the virtual patient by asking relevant clinical questions.
+
+3- The patient’s responses will reflect their symptoms and knowledge as an actual patient who does not yet know their diagnosis.
+
+4- Use the information gathered to form and refine your differential diagnosis.
+
 5- Continue exploring the case until you feel confident in your final diagnosis.
 ''')
+#st.markdown("---")
 
 # Load predefined cases
 with open("case4.txt", "r") as f:
@@ -65,60 +57,59 @@ if "selected_case" in st.session_state:
     file_name = st.session_state["file_name"]
 
 st.markdown(f"**File Name:** {file_name}")
+#st.markdown("---")
 
-# Voice Input Section
+# Ask the Patient Section
 st.header("Ask the Virtual Patient")
-webrtc_ctx = webrtc_streamer(key="example", rtc_configuration=RTC_CONFIGURATION, media_stream_constraints={"audio": True, "video": False})
+if "qa_history" not in st.session_state:
+    st.session_state["qa_history"] = []
 
-if webrtc_ctx.state.playing:
-    st.text("Please speak now...")
-    audio_data = webrtc_ctx.audio_receiver.get_frames(timeout=None)
-    # You need to implement processing of audio_data to convert it to text
-    prompt = "Converted audio to text here"  # Placeholder for actual conversion logic
+prompt = st.text_input("Enter your question:")
+if prompt:
+    with st.spinner('Processing...'):
+        time.sleep(2)
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+    llm = OpenAI(api_key=openai_api_key)
+    #llm = OpenAI(api_key="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")
+    
+    template = """
+    You are a virtual patient. Below is additional context from a file or a selected case:
+    {file_content}
 
-    if prompt:
-        with st.spinner('Processing...'):
-            time.sleep(2)
-        openai_api_key = st.secrets["OPENAI_API_KEY"]
-        llm = OpenAI(api_key=openai_api_key)
-        
-        template = """
-        You are a virtual patient. Below is additional context from a file or a selected case:
-        {file_content}
-        
-        The user asks: {user_prompt}
-        Please respond as helpfully and accurately as possible.
-        """
-        
-        prompt_template = PromptTemplate(
-            input_variables=["user_prompt", "file_content"],
-            template=template
-        )
-        
-        try:
-            llm_chain = LLMChain(prompt=prompt_template, llm=llm)
-            response = llm_chain.run(user_prompt=prompt, file_content=file_content)
-            text_to_speech(response)  # Speak the response
-        except OpenAI.AuthenticationError:
-            st.error("Authentication failed. Please check your API key.")
+    The user asks: {user_prompt}
+    Please respond as helpfully and accurately as possible.
+    """
 
-        st.session_state["qa_history"].append({"question": prompt, "answer": response})
+    prompt_template = PromptTemplate(
+        input_variables=["user_prompt", "file_content"],
+        template=template
+    )
+    
+    try:
+        llm_chain = LLMChain(prompt=prompt_template, llm=llm)
+        response = llm_chain.run(user_prompt=prompt, file_content=file_content)
+    except OpenAI.AuthenticationError:
+        st.error("test - Authentication failed. Please check your API key.")
 
-        with open(history_file_name, "a") as file:
-            file.write(f"File Name: {file_name}\n")
-            file.write(f"Q: {prompt}\n")
-            file.write(f"A: {response}\n")
-            file.write("\n")
+    st.session_state["qa_history"].append({"question": prompt, "answer": response})
 
-        st.markdown(f"**Patient Response:** {response}")
+    with open(history_file_name, "a") as file:
+        file.write(f"File Name: {file_name}\n")
+        file.write(f"Q: {prompt}\n")
+        file.write(f"A: {response}\n")
+        file.write("\n")
+
+    st.markdown(f"**Patient Response:** {response}")
+
+#st.markdown("---")
 
 # Q&A History Section
 st.header("Q&A History")
-if "qa_history" in st.session_state:
-    qa_history_text = "\n".join(
-        [f"Q: {qa['question']}\nA: {qa['answer']}" for qa in st.session_state["qa_history"]]
-    )
-    st.text_area("Conversation History", qa_history_text, height=300, disabled=True)
+qa_history_text = "\n".join(
+    [f"Q: {qa['question']}\nA: {qa['answer']}" for qa in st.session_state["qa_history"]]
+)
+st.text_area("Conversation History", qa_history_text, height=300, disabled=True)
+if st.session_state["qa_history"]:
     history_download = "\n".join(
         [f"File Name: {file_name}\nQ: {qa['question']}\nA: {qa['answer']}\n" for qa in st.session_state["qa_history"]]
     )
@@ -129,35 +120,53 @@ if "qa_history" in st.session_state:
         mime="text/plain"
     )
 
+## Diagnosis Section
+#st.header("Your Diagnosis")
+#user_diagnosis = st.text_area("Provide your diagnosis below:")
+#if st.button("Send Diagnosis"):
+#    with open(history_file_name, "a") as file:
+#        file.write("### User Diagnosis:\n")
+#        file.write(user_diagnosis + "\n")
+#    st.session_state["qa_history"].append({"question": "User Diagnosis", "answer": user_diagnosis})
+#    st.success("Diagnosis added to the file and history.")
+
+
 st.markdown("---")
 
-# Admin Section
 st.title("For Admin Use ONLY")
+
 admin_input = st.text_input("Enter the admin code:")
 # Generate Analysis Section
-if st.button("Generate Feedback") and admin_input == "admin1":
-    with st.spinner('Generating analysis...'):
-        time.sleep(2)
-        analysis_llm = OpenAI(api_key=openai_api_key)
-
-        analysis_template = """
-        Based on the following Q&A history, provide detailed feedback:
-
-        Q&A History:
-        {qa_history}
-
-        Provide constructive feedback on the questions asked provided.
-        """
-
-        analysis_prompt = PromptTemplate(
-            input_variables=["qa_history"],
-            template=analysis_template
-        )
-
-        analysis_chain = LLMChain(prompt=analysis_prompt, llm=analysis_llm)
-        analysis_response = analysis_chain.run(qa_history=qa_history_text)
-
-        st.subheader("Analysis Feedback")
-        st.markdown(analysis_response)
-else:
-    st.error("This is for admin use only - please make sure the code is correct.")
+st.header("Generate Analysis")
+if st.button("Generate Feedback"):
+    if st.session_state["qa_history"]:
+            if admin_input == "admin1":
+                with st.spinner('Generating analysis...'):
+                    time.sleep(2)
+                    analysis_llm = OpenAI(api_key=openai_api_key)
+        
+                    analysis_template = """
+                    Based on the following Q&A history, provide detailed feedback:
+        
+                    Q&A History:
+                    {qa_history}
+        
+                    Provide constructive feedback on the questions asked provided.
+                    """
+        
+                    analysis_prompt = PromptTemplate(
+                        input_variables=["qa_history"],
+                        template=analysis_template
+                    )
+        
+                    analysis_chain = LLMChain(prompt=analysis_prompt, llm=analysis_llm)
+                    analysis_response = analysis_chain.run(
+                        qa_history=qa_history_text
+                    )
+        
+                    st.subheader("Analysis Feedback")
+                    st.markdown(analysis_response)
+            else:
+                st.error("This is for admin use only - please make sure the code is correct.")
+    else:
+        st.error("Please ensure both Q&A history are available.")
