@@ -73,7 +73,7 @@ st.markdown(f"**File Name:** {file_name}")
 #st.markdown("---")
 
 openai_api_key = st.secrets["OPENAI_API_KEY"]
-llm = openai.OpenAI(api_key=openai_api_key)
+llm2 = openai.OpenAI(api_key=openai_api_key)
 placeholder = st.empty()
 
 #Ask by voice
@@ -86,7 +86,7 @@ if recorded_audio:
     audio_file = "audio.mp3"
     with open(audio_file, "wb") as f:
         f.write(recorded_audio)
-    transcribed_text=transcribe_audio(llm, audio_file)
+    transcribed_text=transcribe_audio(llm2, audio_file)
     prompt = placeholder.text_input("Enter your question:", transcribed_text)
 
     
@@ -99,7 +99,7 @@ if "qa_history" not in st.session_state:
 if prompt:
     with st.spinner('Processing...'):
         time.sleep(2)
-    
+    llm = OpenAI(api_key=openai_api_key)
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
     {file_content}
