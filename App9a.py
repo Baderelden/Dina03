@@ -86,7 +86,8 @@ if recorded_audio:
     with open(audio_file, "wb") as f:
         f.write(recorded_audio)
     transcribed_text=transcribe_audio(llm, audio_file)
-    prompt.value = transcribed_text
+    prompt = st.text_input("Enter your question:", transcribed_text)
+
     
 # Ask the Patient Section
 st.header("Ask the Virtual Patient")
