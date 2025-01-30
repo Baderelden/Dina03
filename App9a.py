@@ -74,6 +74,7 @@ st.markdown(f"**File Name:** {file_name}")
 #Ask by voice
 st.title("🎤 Ask you questions")
 st.write("Click on the voice recorder to ask question")
+recorded_audio = audio_recorder()
 
 # Ask the Patient Section
 st.header("Ask the Virtual Patient")
