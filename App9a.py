@@ -13,6 +13,7 @@ def transcribe_audio(client, audio_path):
 
 def text_to_audio(client, text, audio_path):
     response = client.audio.speech.create(model="tts-1", voice="nova", input=text)
+    response.stream_to_file(audio_path)
 
 # Sidebar for optional inputs
 st.sidebar.header("Options")
