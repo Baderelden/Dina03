@@ -4,7 +4,7 @@ import os
 import base64
 
 # For audio recording in Streamlit
-from streamlit_audio_recorder import audio_recorder
+from audio_recorder_streamlit import audio_recorder
 
 # For speech recognition
 import speech_recognition as sr
