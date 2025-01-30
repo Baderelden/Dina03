@@ -6,6 +6,14 @@ import time
 import openai
 import base64
 
+def transcribe_audio(client, audio_path):
+    with open(audio_path, "rb") as audio_file:
+        transcript= client.audio.transcriptions.create(model="whisper-1", file=audio_file)
+        return transcript.text
+
+def text_to_audio(client, text, audio_path):
+    response = client.audio.speech.create(model="tts-1", voice="nova", input=text)
+
 # Sidebar for optional inputs
 st.sidebar.header("Options")
 history_file_name = st.sidebar.text_input("Enter the file name to save history:", value="chat_history.txt")
