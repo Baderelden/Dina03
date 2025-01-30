@@ -6,7 +6,4 @@ streamlit_webrtc
 pydub
 gTTS
 audio_recorder_streamlit
-speech_recognition
-base64
-OS
-time
+
