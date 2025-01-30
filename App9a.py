@@ -81,7 +81,7 @@ recorded_audio = audio_recorder()
 
 if recorded_audio:
     audio_file = "audio.mp3"
-    with open(audio_file, "wb") as f
+    with open(audio_file, "wb") as f:
         f.write(recorded_audio)
     transcribed_text=transcribe_audio(llm, audio_file)
     
