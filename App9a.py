@@ -1,6 +1,7 @@
 import streamlit as st
 from langchain import PromptTemplate, LLMChain
 from langchain.llms import OpenAI
+import openai
 from audio_recorder_streamlit import audio_recorder
 import time
 import openai
