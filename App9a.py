@@ -120,17 +120,6 @@ if st.session_state["qa_history"]:
         mime="text/plain"
     )
 
-## Diagnosis Section
-#st.header("Your Diagnosis")
-#user_diagnosis = st.text_area("Provide your diagnosis below:")
-#if st.button("Send Diagnosis"):
-#    with open(history_file_name, "a") as file:
-#        file.write("### User Diagnosis:\n")
-#        file.write(user_diagnosis + "\n")
-#    st.session_state["qa_history"].append({"question": "User Diagnosis", "answer": user_diagnosis})
-#    st.success("Diagnosis added to the file and history.")
-
-
 st.markdown("---")
 
 st.title("For Admin Use ONLY")
