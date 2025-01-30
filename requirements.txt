@@ -5,7 +5,7 @@ langchain_community
 streamlit_webrtc
 pydub
 gTTS
-streamlit_audio_recorder
+audio_recorder_streamlit
 speech_recognition
 base64
 OS
