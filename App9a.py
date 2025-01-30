@@ -74,13 +74,16 @@ st.markdown(f"**File Name:** {file_name}")
 
 openai_api_key = st.secrets["OPENAI_API_KEY"]
 llm2 = openai.OpenAI(api_key=openai_api_key)
-placeholder = st.empty()
 
-#Ask by voice
-st.title("🎤 Ask you questions")
+# Ask the Patient Section
 st.write("Click on the voice recorder to ask question")
 recorded_audio = audio_recorder()
-prompt = placeholder.text_input("Enter your question:")
+placeholder = st.empty()
+prompt = placeholder.text_input("Or type your question:")
+
+st.header("Ask the Virtual Patient")
+if "qa_history" not in st.session_state:
+    st.session_state["qa_history"] = []
 
 if recorded_audio:
     audio_file = "audio.mp3"
@@ -88,14 +91,7 @@ if recorded_audio:
         f.write(recorded_audio)
     transcribed_text=transcribe_audio(llm2, audio_file)
     prompt = placeholder.text_input("Enter your question:", transcribed_text)
-
     
-# Ask the Patient Section
-st.header("Ask the Virtual Patient")
-if "qa_history" not in st.session_state:
-    st.session_state["qa_history"] = []
-
-
 if prompt:
     with st.spinner('Processing...'):
         time.sleep(2)
