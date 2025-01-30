@@ -1,7 +1,10 @@
 import streamlit as st
 from langchain import PromptTemplate, LLMChain
 from langchain.llms import OpenAI
+from audio_recorder_streamlit import audio_recorder
 import time
+import openai
+import base64
 
 # Sidebar for optional inputs
 st.sidebar.header("Options")
