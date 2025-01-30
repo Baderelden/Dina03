@@ -73,7 +73,7 @@ st.markdown(f"**File Name:** {file_name}")
 #st.markdown("---")
 
 openai_api_key = st.secrets["OPENAI_API_KEY"]
-llm = OpenAI(api_key=openai_api_key)
+llm = openai.OpenAI(api_key=openai_api_key)
 
 #Ask by voice
 st.title("🎤 Ask you questions")
