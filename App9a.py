@@ -81,6 +81,7 @@ st.write("Click on the voice recorder to ask question")
 recorded_audio = audio_recorder()
 placeholder = st.empty()
 prompt = placeholder.text_input("Or type your question:")
+placeholder2 = st.empty()
 
 if "qa_history" not in st.session_state:
     st.session_state["qa_history"] = []
@@ -90,7 +91,7 @@ if recorded_audio:
     with open(audio_file, "wb") as f:
         f.write(recorded_audio)
     transcribed_text=transcribe_audio(llm2, audio_file)
-    prompt = placeholder.text_input("Enter your question:", transcribed_text)
+    prompt = placeholder.text_input("Or type your question:", transcribed_text)
     
 if prompt:
     with st.spinner('Processing...'):
@@ -124,6 +125,9 @@ if prompt:
         file.write("\n")
 
     st.markdown(f"**Patient Response:** {response}")
+    response_audio_file = "audio_response.mp3"
+    text_to_audio(llm2, response, response_audio_file)
+    placeholder2.audio(response_audio_file)
 
 #st.markdown("---")
 
