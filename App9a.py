@@ -62,6 +62,10 @@ if "selected_case" in st.session_state:
 st.markdown(f"**File Name:** {file_name}")
 #st.markdown("---")
 
+#Ask by voice
+st.title("🎤 Ask you questions")
+st.write("Click on the voice recorder to ask question")
+
 # Ask the Patient Section
 st.header("Ask the Virtual Patient")
 if "qa_history" not in st.session_state:
