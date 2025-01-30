@@ -79,19 +79,21 @@ llm = openai.OpenAI(api_key=openai_api_key)
 st.title("🎤 Ask you questions")
 st.write("Click on the voice recorder to ask question")
 recorded_audio = audio_recorder()
+prompt = st.text_input("Enter your question:")
 
 if recorded_audio:
     audio_file = "audio.mp3"
     with open(audio_file, "wb") as f:
         f.write(recorded_audio)
     transcribed_text=transcribe_audio(llm, audio_file)
+    prompt.value = transcribed_text
     
 # Ask the Patient Section
 st.header("Ask the Virtual Patient")
 if "qa_history" not in st.session_state:
     st.session_state["qa_history"] = []
 
-prompt = st.text_input("Enter your question:")
+
 if prompt:
     with st.spinner('Processing...'):
         time.sleep(2)
