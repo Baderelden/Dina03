@@ -103,8 +103,8 @@ if recorded_audio:
     prompt = placeholder.text_input("Or type your question:", transcribed_text)
     
 if prompt:
-    with st.spinner('Processing...'):
-        time.sleep(2)
+    #with st.spinner('Processing...'):
+    #    time.sleep(2)
     llm = OpenAI(api_key=openai_api_key)
     template = """
     You are a virtual patient. Below is additional context from a file or a selected case:
