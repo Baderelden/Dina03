@@ -86,7 +86,7 @@ llm2 = openai.OpenAI(api_key=openai_api_key)
 
 # Ask the Patient Section
 st.header("Ask the Virtual Patient")
-st.write("Click on the voice recorder to ask question")
+#st.write("Click on the voice recorder to ask question")
 recorded_audio = audio_recorder()
 placeholder = st.empty()
 prompt = placeholder.text_input("Or type your question:")
