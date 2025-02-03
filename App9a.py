@@ -12,8 +12,8 @@ def transcribe_audio(client, audio_path):
         transcript= client.audio.transcriptions.create(model="whisper-1", file=audio_file)
         return transcript.text
 
-def text_to_audio(client, text, audio_path):
-    response = client.audio.speech.create(model="tts-1", voice="nova", input=text)
+def text_to_audio(client, text, audio_path, nVoice):
+    response = client.audio.speech.create(model="tts-1", voice=nVoice, input=text)
     response.stream_to_file(audio_path)
 
 def auto_play_audio(audio_file, ph2):
@@ -64,9 +64,11 @@ st.header("Select a Case")
 if st.button("Case 1"):
     st.session_state["selected_case"] = case1_text
     st.session_state["file_name"] = "case4.txt"
+    cVoice = "Ash"
 if st.button("Case 2"):
     st.session_state["selected_case"] = case2_text
     st.session_state["file_name"] = "case5.txt"
+    cVoice = "Echo"
 
 file_content = ""
 file_name = "Uploaded file"
@@ -135,7 +137,7 @@ if prompt:
 
     st.markdown(f"**Patient Response:** {response}")
     response_audio_file = "audio_response.mp3"
-    text_to_audio(llm2, response, response_audio_file)
+    text_to_audio(llm2, response, response_audio_file, cVoice)
     #placeholder2.audio(response_audio_file)
     auto_play_audio(response_audio_file, placeholder2)
 
