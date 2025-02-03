@@ -30,7 +30,6 @@ st.sidebar.header("Options")
 history_file_name = st.sidebar.text_input("Enter the file name to save history:", value="chat_history.txt")
 st.sidebar.write("You can optionally upload a file for context:")
 uploaded_file = st.sidebar.file_uploader("Upload a file (e.g., .txt)", type=["txt", "md", "csv", "json"])
-
 # Main Title and Logo
 col1, col2 = st.columns([3, 1])
 with col1:
@@ -57,16 +56,19 @@ with open("case01.txt", "r") as f:
     case1_text = f.read()
 with open("case02.txt", "r") as f:
     case2_text = f.read()
+placeholder3 = st.empty()
 
 # Select Case
 st.header("Select a Case")
 cVoice = "echo"
 if st.button("Case 1"):
     cVoice = "ash"
+    placeholder3.markdown(cVoice)
     st.session_state["selected_case"] = case1_text
     st.session_state["file_name"] = "case01.txt"
 if st.button("Case 2"):
     cVoice = "echo"
+    placeholder3.markdown(cVoice)
     st.session_state["selected_case"] = case2_text
     st.session_state["file_name"] = "case02.txt"
     
