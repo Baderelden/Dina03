@@ -60,7 +60,7 @@ with open("case5.txt", "r") as f:
 
 # Select Case
 st.header("Select a Case")
-cVoice = "nova"
+cVoice = "echo"
 if st.button("Case 1"):
     cVoice = "ash"
     st.session_state["selected_case"] = case1_text
