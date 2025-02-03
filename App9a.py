@@ -60,7 +60,6 @@ placeholder3 = st.empty()
 
 # Select Case
 st.header("Select a Case")
-cVoice = "echo"
 if st.button("Case 1"):
     cVoice = "ash"
     placeholder3.markdown(cVoice)
@@ -71,6 +70,8 @@ if st.button("Case 2"):
     placeholder3.markdown(cVoice)
     st.session_state["selected_case"] = case2_text
     st.session_state["file_name"] = "case02.txt"
+else:
+    cVoice = "echo"
     
 
 file_content = ""
