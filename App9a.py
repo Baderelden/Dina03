@@ -62,12 +62,10 @@ with open("case02.txt", "r") as f:
 st.header("Select a Case")
 if st.button("Case 1"):
     cVoice = "ash"
-    placeholder3.markdown(cVoice)
     st.session_state["selected_case"] = case1_text
     st.session_state["file_name"] = "case01.txt"
 if st.button("Case 2"):
     cVoice = "echo"
-    placeholder3.markdown(cVoice)
     st.session_state["selected_case"] = case2_text
     st.session_state["file_name"] = "case02.txt"
 else:
