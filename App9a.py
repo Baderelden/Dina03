@@ -13,7 +13,7 @@ def transcribe_audio(client, audio_path):
         return transcript.text
 
 def text_to_audio(client, text, audio_path, nVoice):
-    response = client.audio.speech.create(model="tts-1", voice=nVoice, input=text)
+    response = client.audio.speech.create(model="tts-1", voice="ash", input=text)
     response.stream_to_file(audio_path)
 
 def auto_play_audio(audio_file, ph2):
@@ -56,7 +56,7 @@ with open("case01.txt", "r") as f:
     case1_text = f.read()
 with open("case02.txt", "r") as f:
     case2_text = f.read()
-placeholder3 = st.empty()
+
 
 # Select Case
 st.header("Select a Case")
