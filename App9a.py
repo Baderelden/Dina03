@@ -13,7 +13,7 @@ def transcribe_audio(client, audio_path):
         return transcript.text
 
 def text_to_audio(client, text, audio_path, nVoice):
-    response = client.audio.speech.create(model="tts-1", voice=nVoice, input=text)
+    response = client.audio.speech.create(model="tts-1", voice="Ash", input=text)
     response.stream_to_file(audio_path)
 
 def auto_play_audio(audio_file, ph2):
