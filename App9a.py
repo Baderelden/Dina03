@@ -62,13 +62,14 @@ with open("case5.txt", "r") as f:
 st.header("Select a Case")
 cVoice = "nova"
 if st.button("Case 1"):
-    st.session_state["selected_case"] = case1_text
-    st.session_state["file_name"] = "case4.txt"
     cVoice = "ash"
+    st.session_state["selected_case"] = case1_text
+    st.session_state["file_name"] = "case01.txt"
 if st.button("Case 2"):
-    st.session_state["selected_case"] = case2_text
-    st.session_state["file_name"] = "case5.txt"
     cVoice = "echo"
+    st.session_state["selected_case"] = case2_text
+    st.session_state["file_name"] = "case02.txt"
+    
 
 file_content = ""
 file_name = "Uploaded file"
