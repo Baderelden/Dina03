@@ -59,16 +59,16 @@ with open("case5.txt", "r") as f:
     case2_text = f.read()
 
 # Select Case
-cVoice = "Ash"
+cVoice = "ash"
 st.header("Select a Case")
 if st.button("Case 1"):
     st.session_state["selected_case"] = case1_text
     st.session_state["file_name"] = "case4.txt"
-    cVoice = "Ash"
+    cVoice = "ash"
 if st.button("Case 2"):
     st.session_state["selected_case"] = case2_text
     st.session_state["file_name"] = "case5.txt"
-    cVoice = "Echo"
+    cVoice = "echo"
 
 file_content = ""
 file_name = "Uploaded file"
