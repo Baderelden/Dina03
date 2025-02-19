@@ -38,7 +38,7 @@ with col2:
 
 st.write('''
 Instructions:\n
-1- Choose a patient scenario (from Cases 1 or 2) or upload your own case file.\n
+1- Choose a patient scenario (click on Cases 1) or upload your own case file.\n
 2- Interact with the virtual patient by asking relevant clinical questions.
 
 3- The patient’s responses will reflect their symptoms and knowledge as an actual patient who does not yet know their diagnosis.
@@ -50,10 +50,8 @@ Instructions:\n
 #st.markdown("---")
 
 # Load predefined cases
-with open("case01.txt", "r") as f:
+with open("case05.txt", "r") as f:
     case1_text = f.read()
-with open("case02.txt", "r") as f:
-    case2_text = f.read()
 
 
 # Select Case
@@ -61,11 +59,7 @@ st.header("Select a Case")
 if st.button("Case 1"):
     cVoice = "ash"
     st.session_state["selected_case"] = case1_text
-    st.session_state["file_name"] = "case01.txt"
-if st.button("Case 2"):
-    cVoice = "echo"
-    st.session_state["selected_case"] = case2_text
-    st.session_state["file_name"] = "case02.txt"
+    st.session_state["file_name"] = "case05.txt"
 else:
     cVoice = "echo"
     
