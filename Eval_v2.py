@@ -268,7 +268,7 @@ def main():
         st.markdown(
             """
             <div style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
-                <img src="./aasu_logo.jpg" width="130">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQKCgdUMKeGBx2NvwSzlqxzY78s14MpLUhvg&s" width="130">
             </div>
             """,
             unsafe_allow_html=True,
