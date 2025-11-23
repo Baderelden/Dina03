@@ -264,17 +264,6 @@ def main():
     col_left, col_center, col_right = st.columns([1, 3, 1])
 
     with col_center:
-        """
-        # Right-aligned logo
-        st.markdown(
-            """
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
-                <img src="https://media.licdn.com/dms/image/v2/D4D0BAQH1uzgyZIvg8A/company-logo_200_200/company-logo_200_200/0/1712063501998/aasuedukw_logo?e=1765411200&v=beta&t=9TPSJcCdOJxwdFb126WDFFpFBBLVQ9rIMT2aiNySCrY" width="90">
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        """
 
         # Language toggle
         language = st.radio(
