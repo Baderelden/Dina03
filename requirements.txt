@@ -1,12 +1,13 @@
-langchain
+streamlit
+langchain==0.1.12
 langchain-openai
 openai
-streamlit
+pypdf
+python-docx
 langchain_community
 streamlit_webrtc
 pydub
 gTTS
 audio_recorder_streamlit
-python-docx
-pypdf
+
 
