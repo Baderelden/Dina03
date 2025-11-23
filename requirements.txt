@@ -1,4 +1,5 @@
 langchain
+langchain-openai
 openai
 streamlit
 langchain_community
@@ -6,4 +7,6 @@ streamlit_webrtc
 pydub
 gTTS
 audio_recorder_streamlit
+python-docx
+pypdf
 
