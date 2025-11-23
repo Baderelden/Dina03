@@ -268,7 +268,7 @@ def main():
         st.markdown(
             """
             <div style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
-                <img src="/Users/mobahy/Library/CloudStorage/GoogleDrive-mobahy@gmail.com/My Drive/AASU/Academic /Eval App/aasu_logo.jpg" width="130">
+                <img src="aasu_logo.jpg" width="130">
             </div>
             """,
             unsafe_allow_html=True,
