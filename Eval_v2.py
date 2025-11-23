@@ -4,7 +4,7 @@ from datetime import datetime
 import streamlit as st
 
 from langchain_openai import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 
 from pypdf import PdfReader
 import docx
@@ -17,6 +17,7 @@ def read_uploaded_file(uploaded_file) -> str:
     """
     Returns the textual content of the uploaded file as a string.
     Supports: .txt, .md, .pdf, .docx (basic support).
+    from langchain.prompts import ChatPromptTemplate
     """
     filename = uploaded_file.name.lower()
 
