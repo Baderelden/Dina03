@@ -264,6 +264,7 @@ def main():
     col_left, col_center, col_right = st.columns([1, 3, 1])
 
     with col_center:
+        """
         # Right-aligned logo
         st.markdown(
             """
@@ -273,6 +274,7 @@ def main():
             """,
             unsafe_allow_html=True,
         )
+        """
 
         # Language toggle
         language = st.radio(
