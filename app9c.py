@@ -14,6 +14,7 @@ from openai import OpenAI as OpenAIClient, AuthenticationError  # SDK client + e
 from audio_recorder_streamlit import audio_recorder
 import time
 import base64
+from openai import RateLimitError
 
 def transcribe_audio(client, audio_path):
     with open(audio_path, "rb") as audio_file:
@@ -108,7 +109,10 @@ if recorded_audio:
     transcribed_text=transcribe_audio(llm2, audio_file)
     prompt = placeholder.text_input("Or type your question:", transcribed_text)
     
-if prompt:
+if "last_prompt" not in st.session_state:
+    st.session_state["last_prompt"] = None
+if prompt and prompt != st.session_state["last_prompt"]:
+    st.session_state["last_prompt"] = prompt
     #with st.spinner('Processing...'):
     #    time.sleep(2)
     #llm = OpenAI(api_key=openai_api_key)
@@ -132,10 +136,19 @@ if prompt:
     response = ""
     try:
         llm_chain = LLMChain(prompt=prompt_template, llm=llm)
-        response = llm_chain.run(user_prompt=prompt, file_content=file_content)
-    #except OpenAI.AuthenticationError:
+        # simple backoff retry (3 attempts)
+        for attempt in range(3):
+            try:
+                response = llm_chain.run(user_prompt=prompt, file_content=file_content)
+                break
+            except RateLimitError:
+                if attempt == 2:
+                    st.warning("Rate limit reached. Please wait a moment and try again.")
+                    st.stop()
+                time.sleep(2 * (attempt + 1))  # 2s, 4s, 6s
     except AuthenticationError:
-        st.error("test - Authentication failed. Please check your API key.")
+        st.error("Authentication failed. Please check your API key / Streamlit secrets.")
+        st.stop()
 
     st.session_state["qa_history"].append({"question": prompt, "answer": response})
 
