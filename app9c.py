@@ -1,10 +1,18 @@
+#import streamlit as st
+#from langchain import PromptTemplate, LLMChain
+#from langchain.llms import OpenAI
+#import openai
+#from audio_recorder_streamlit import audio_recorder
+#import time
+#import openai
+#import base64
+
 import streamlit as st
 from langchain import PromptTemplate, LLMChain
-from langchain.llms import OpenAI
-import openai
+from langchain.llms import OpenAI as LangChainOpenAI  # rename to avoid clash
+from openai import OpenAI as OpenAIClient, AuthenticationError  # SDK client + exception
 from audio_recorder_streamlit import audio_recorder
 import time
-import openai
 import base64
 
 def transcribe_audio(client, audio_path):
@@ -78,7 +86,9 @@ st.markdown(f"**File Name:** {file_name}")
 #st.markdown("---")
 
 openai_api_key = st.secrets["OPENAI_API_KEY"]
-llm2 = openai.OpenAI(api_key=openai_api_key)
+#llm2 = openai.OpenAI(api_key=openai_api_key)
+llm2 = OpenAIClient(api_key=openai_api_key)
+
 
 # Ask the Patient Section
 st.header("Ask the Virtual Patient")
@@ -115,10 +125,15 @@ if prompt:
         template=template
     )
     
+    #try:
+    #    llm_chain = LLMChain(prompt=prompt_template, llm=llm)
+    #    response = llm_chain.run(user_prompt=prompt, file_content=file_content)
+    response = ""
     try:
         llm_chain = LLMChain(prompt=prompt_template, llm=llm)
         response = llm_chain.run(user_prompt=prompt, file_content=file_content)
-    except OpenAI.AuthenticationError:
+    #except OpenAI.AuthenticationError:
+    except AuthenticationError:
         st.error("test - Authentication failed. Please check your API key.")
 
     st.session_state["qa_history"].append({"question": prompt, "answer": response})
